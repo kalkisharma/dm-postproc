@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html data-theme="dark" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DM Post-Processor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <span class="app-title">DM Post-Processor</span>
+  <span class="version-badge font-mono" id="version-badge">v—</span>
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="A">Process</button>
+    <button class="mode-btn" data-mode="B">Visualize</button>
+  </div>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">&#9789;</button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+
+    <!-- MODE A PANEL -->
+    <div id="panel-A" class="mode-panel">
+
+      <section class="sidebar-section collapsible">
+        <button class="section-header" aria-expanded="true">
+          <span>File Settings</span><span class="chevron">&#8964;</span>
+        </button>
+        <div class="section-body">
+          <label class="field-label">Params filename
+            <input type="text" id="params-filename" class="text-input" />
+          </label>
+          <label class="field-label">Data filename
+            <input type="text" id="data-filename" class="text-input" />
+          </label>
+          <label class="field-label">Subfolder name
+            <input type="text" id="subfolder-name" class="text-input" />
+            <small class="field-hint">Leave blank if data CSV is in the same folder as params</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="sidebar-section">
+        <div class="section-header static-header"><span>Run Folder</span></div>
+        <div class="path-row">
+          <input type="text" id="run-folder-path" class="text-input" placeholder="Paste or browse…" />
+          <button class="icon-btn" id="browse-run-folder" title="Browse" data-target="run-folder-path" data-mode="folder">&#128193;</button>
+        </div>
+      </section>
+
+      <section class="sidebar-section">
+        <div class="section-header static-header"><span>Processing Options</span></div>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="window-type" value="fractional" checked /> Fractional</label>
+          <label class="radio-label"><input type="radio" name="window-type" value="absolute" /> Absolute</label>
+        </div>
+        <label class="field-label" id="window-label">
+          Last&nbsp;<input type="number" id="window-value" class="text-input number-input" value="20" min="1" />&nbsp;<span id="window-unit">%</span>
+        </label>
+        <label class="field-label">
+          Workers
+          <input type="range" id="n-workers" min="1" max="1" value="1" />
+          <span id="workers-label" class="font-mono hint-text">1 of 1 cores</span>
+        </label>
+        <label class="field-label">Output folder
+          <div class="path-row">
+            <input type="text" id="output-folder-path" class="text-input" placeholder="Default: parent of run folder" />
+            <button class="icon-btn" id="browse-output-folder" title="Browse" data-target="output-folder-path" data-mode="folder">&#128193;</button>
+          </div>
+        </label>
+      </section>
+
+      <button id="run-btn" class="primary-btn full-width">Run Processing</button>
+    </div>
+
+    <!-- MODE B PANEL -->
+    <div id="panel-B" class="mode-panel hidden">
+
+      <section class="sidebar-section">
+        <div class="section-header static-header"><span>Load Data</span></div>
+        <div class="path-row">
+          <input type="text" id="csv-path" class="text-input" placeholder="Path to post-processed CSV…" />
+          <button class="icon-btn" id="browse-csv" title="Browse" data-target="csv-path" data-mode="csv">&#128193;</button>
+        </div>
+        <button id="load-btn" class="primary-btn full-width">Load CSV</button>
+      </section>
+
+      <section class="sidebar-section hidden" id="plot-config-section">
+        <div class="section-header static-header"><span>Plot Configuration</span></div>
+        <label class="field-label">Plot type
+          <select id="plot-type" class="select-input">
+            <option value="scatter">Scatter</option>
+            <option value="pair">Pair Matrix</option>
+            <option value="custom">Custom</option>
+          </select>
+        </label>
+
+        <div id="scatter-controls">
+          <label class="field-label">X axis <select id="scatter-x" class="select-input"></select></label>
+          <label class="field-label">Y axis <select id="scatter-y" class="select-input"></select></label>
+          <label class="field-label">Color by
+            <select id="scatter-color" class="select-input"><option value="">None</option></select>
+          </label>
+        </div>
+
+        <div id="pair-controls" class="hidden">
+          <p class="field-hint">Select columns for pair matrix:</p>
+          <div id="pair-column-list" class="checkbox-list"></div>
+        </div>
+
+        <div id="custom-controls" class="hidden">
+          <label class="field-label">X axis <select id="custom-x" class="select-input"></select></label>
+          <label class="field-label">Y axes (multi)
+            <select id="custom-y" class="select-input" multiple size="5"></select>
+          </label>
+        </div>
+
+        <button id="plot-btn" class="primary-btn full-width">Generate Plot</button>
+      </section>
+    </div>
+
+  </aside>
+
+  <main class="main-panel">
+
+    <!-- MODE A VIEW -->
+    <div id="view-A" class="mode-view">
+      <div class="status-bar">
+        <span id="process-status" class="status-text">Idle — configure settings and click Run</span>
+      </div>
+      <div class="progress-track">
+        <div id="progress-bar" class="progress-fill" style="width:0%"></div>
+      </div>
+      <div id="summary-chips" class="chips hidden"></div>
+      <div id="case-log" class="case-log"></div>
+      <button id="download-btn" class="secondary-btn hidden">&#8595; Download Output CSV</button>
+    </div>
+
+    <!-- MODE B VIEW -->
+    <div id="view-B" class="mode-view hidden">
+      <div id="plot-container"></div>
+      <div id="stats-table-container"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PATH BROWSER MODAL -->
+<div id="path-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="File browser">
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title">Browse</span>
+      <button id="modal-close" class="icon-btn" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="modal-path-bar">
+      <input type="text" id="modal-current-path" class="text-input" placeholder="Type a path and press Enter" />
+      <button id="modal-up" class="icon-btn" title="Go up">&#8593; Up</button>
+    </div>
+    <div id="modal-listing" class="modal-listing"></div>
+    <div class="modal-footer">
+      <button id="modal-select" class="primary-btn">Select</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/main.js"></script>
+</body>
+</html>

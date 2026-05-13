@@ -1,0 +1,4 @@
+# Last updated: 2026-05-12  (v1.0.0)
+flask>=3.0
+pandas>=2.0
+numpy>=1.26

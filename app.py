@@ -274,11 +274,10 @@ def create_app() -> Flask:
             # Warn about all-NaN columns so frontend can inform user
             all_nan_cols = [c for c in df.columns if df[c].isna().all()]
 
-            # Replace NaN with None so JSON serializes cleanly
-            data = df.where(df.notna(), other=None).to_dict(orient="records")
-            # Add index as a column in each row
-            for i, row in enumerate(data):
-                row["case_name"] = df.index[i]
+            # Use pandas to_json → parse back so NaN becomes null (not the invalid JS NaN literal)
+            df_with_index = df.copy()
+            df_with_index.insert(0, "case_name", df.index)
+            data = json.loads(df_with_index.to_json(orient="records"))
             columns = ["case_name"] + columns
             return jsonify({"columns": columns, "data": data,
                             "all_nan_columns": all_nan_cols})

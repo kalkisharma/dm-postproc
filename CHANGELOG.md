@@ -1,3 +1,26 @@
+## [v1.0.0] — 2026-05-12 — Phase 4: Visualization Mode B
+
+### Added
+- Mode B fully operational: `/api/load_csv` returns columns + row data for any post-processed CSV
+- Scatter plot: markers, continuous Viridis color scale, hover shows all param values, error bars from `_std` columns when present
+- Pair matrix: Plotly splom across selected columns, first param column as color dimension
+- Custom plot: multiple Y series on shared X axis, legend with column names, distinct color per series
+- Stats summary table rendered below every plot showing case-by-case values
+- Version badge in UI header populated live from `/api/version`
+- Plotly layout uses CSS variable colors; re-renders on light/dark theme toggle
+- `/api/load_csv` path accessible via file browser modal (mode="csv")
+
+### Changed
+- None
+
+### Fixed
+- None
+
+### Breaking Changes
+- None
+
+---
+
 ## [v0.4.0] — 2026-05-12 — Phase 3: SSE Streaming & Mode A UI
 
 ### Added

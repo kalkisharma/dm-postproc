@@ -1,0 +1,50 @@
+/* DM Post-Processor — stylesheet (stub, full implementation in Phase 3) */
+
+/* ── CSS custom properties ── */
+[data-theme="dark"] {
+  --bg-primary:    #141412;
+  --bg-surface:    #1E1D1A;
+  --bg-surface-2:  #252420;
+  --border:        #353430;
+  --text-primary:  #F0EEE8;
+  --text-secondary:#8A8880;
+  --text-mono:     #C8C4B8;
+  --accent:        #4D80FF;
+  --accent-soft:   #1A2540;
+  --success:       #2AAD6A;
+  --success-soft:  #0F2A1C;
+  --warning:       #E07820;
+  --warning-soft:  #2A1C0A;
+  --danger:        #E5453A;
+  --danger-soft:   #2A1614;
+}
+
+[data-theme="light"] {
+  --bg-primary:    #F5F4F0;
+  --bg-surface:    #FFFFFF;
+  --bg-surface-2:  #EEECEA;
+  --border:        #D4D0C8;
+  --text-primary:  #1A1916;
+  --text-secondary:#6B6860;
+  --text-mono:     #3D3B35;
+  --accent:        #1A5CFF;
+  --accent-soft:   #E8EEFF;
+  --success:       #1A7A4A;
+  --success-soft:  #EAF5EF;
+  --warning:       #B85C00;
+  --warning-soft:  #FEF3E8;
+  --danger:        #C0281C;
+  --danger-soft:   #FEF0EF;
+}
+
+/* ── Base reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+}
+
+.font-mono { font-family: 'IBM Plex Mono', monospace; }

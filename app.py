@@ -181,6 +181,10 @@ def create_app() -> Flask:
             all_cases = _scan(root, config_state)
             total_cases[0] = len(all_cases)
 
+            if total_cases[0] == 0:
+                yield f"data: {_json.dumps({'done': True, 'output_path': '', 'summary': {'total': 0, 'ok': 0, 'warnings': 0, 'missing_data': 0, 'missing_params': 0, 'all_warnings': ['Run folder contains no case subdirectories']}, 'empty_run': True})}\n\n"
+                return
+
             def callback(case_name: str, status: str, warnings: list):
                 done_cases[0] += 1
                 pct = round(done_cases[0] / max(total_cases[0], 1) * 100, 1)
@@ -266,13 +270,18 @@ def create_app() -> Flask:
             import pandas as pd
             df = pd.read_csv(p, index_col=0)
             columns = list(df.columns)
+
+            # Warn about all-NaN columns so frontend can inform user
+            all_nan_cols = [c for c in df.columns if df[c].isna().all()]
+
             # Replace NaN with None so JSON serializes cleanly
             data = df.where(df.notna(), other=None).to_dict(orient="records")
             # Add index as a column in each row
             for i, row in enumerate(data):
                 row["case_name"] = df.index[i]
             columns = ["case_name"] + columns
-            return jsonify({"columns": columns, "data": data})
+            return jsonify({"columns": columns, "data": data,
+                            "all_nan_columns": all_nan_cols})
         except Exception as exc:
             return jsonify({"error": str(exc)}), 500
 

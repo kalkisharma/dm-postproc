@@ -292,10 +292,14 @@ async function startProcessing() {
       currentEventSource = null;
       $('run-btn').disabled = false;
       $('progress-bar').style.width = '100%';
-      $('process-status').textContent = 'Complete';
-      outputFilePath = msg.output_path || '';
-      showSummaryChips(msg.summary || {});
-      if (outputFilePath) $('download-btn').classList.remove('hidden');
+      if (msg.empty_run) {
+        $('process-status').textContent = 'No case subdirectories found in the specified folder.';
+      } else {
+        $('process-status').textContent = 'Complete';
+        outputFilePath = msg.output_path || '';
+        showSummaryChips(msg.summary || {});
+        if (outputFilePath) $('download-btn').classList.remove('hidden');
+      }
       return;
     }
 
@@ -401,6 +405,9 @@ async function loadCSV() {
     csvData    = d.data;
     populatePlotDropdowns(csvColumns);
     $('plot-config-section').classList.remove('hidden');
+    if (d.all_nan_columns && d.all_nan_columns.length) {
+      console.warn('All-NaN columns (excluded from dropdowns):', d.all_nan_columns);
+    }
   } catch (err) {
     alert(`Network error: ${err.message}`);
   }

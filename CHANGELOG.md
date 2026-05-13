@@ -1,3 +1,21 @@
+## [v1.1.0] — 2026-05-12 — Phase 5: Polish & Robustness
+
+### Added
+- Empty run folder handled gracefully: SSE stream emits `empty_run: true` + clear UI message without crash
+- `/api/load_csv` returns `all_nan_columns` list; frontend logs and excludes all-NaN columns from plot dropdowns
+- README fully completed: data format documentation, configuration table, detailed usage with keyboard shortcuts, planned features with stub locations
+
+### Changed
+- None
+
+### Fixed
+- None
+
+### Breaking Changes
+- None
+
+---
+
 ## [v1.0.0] — 2026-05-12 — Phase 4: Visualization Mode B
 
 ### Added

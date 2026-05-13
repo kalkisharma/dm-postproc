@@ -1,6 +1,6 @@
 # DM Post-Processor
 
-![Version](https://img.shields.io/badge/version-v0.3.0-blue)
+![Version](https://img.shields.io/badge/version-v0.4.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-green)
 ![License](https://img.shields.io/badge/license-MIT-gray)
 
@@ -9,7 +9,7 @@ Reads case output folders, averages convergence data over a configurable window,
 and provides an interactive visualization dashboard.
 
 ## Current Version
-**v0.3.0** — Phase 2: Backend Core
+**v0.4.0** — Phase 3: SSE Streaming & Mode A UI
 
 ## Phase History
 | Phase | Version | Description | Status |
@@ -17,7 +17,7 @@ and provides an interactive visualization dashboard.
 | 0 | v0.1.0 | Repository setup & scaffold | ✅ Complete |
 | 1 | v0.2.0 | Sample data generator | ✅ Complete |
 | 2 | v0.3.0 | Backend core (reader, processor, Flask) | ✅ Complete |
-| 3 | v0.4.0 | SSE streaming & Mode A UI | ⏳ Planned |
+| 3 | v0.4.0 | SSE streaming & Mode A UI | ✅ Complete |
 | 4 | v1.0.0 | Visualization — Mode B (first stable release) | ⏳ Planned |
 | 5 | v1.1.0 | Polish & robustness | ⏳ Planned |
 

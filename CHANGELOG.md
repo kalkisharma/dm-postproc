@@ -1,3 +1,21 @@
+## [v0.4.0] — 2026-05-12 — Phase 3: SSE Streaming & Mode A UI
+
+### Added
+- Full `index.html` single-page dashboard: Mode A + Mode B panels, path browser modal, progress bar, summary chips, download button
+- Full `style.css`: complete design system with IBM Plex fonts, dark/light CSS variable themes, collapsible sidebar sections, animated case log rows, Plotly wrapper, stats table
+- Full `main.js`: config round-trip (debounced 800ms), mode switch, theme toggle with Plotly re-render, window type radio, worker slider, SSE event consumer, animated log rows, path browser modal, Mode B scatter/pair/custom plot generators
+
+### Changed
+- None
+
+### Fixed
+- None
+
+### Breaking Changes
+- None
+
+---
+
 ## [v0.3.0] — 2026-05-12 — Phase 2: Backend Core
 
 ### Added

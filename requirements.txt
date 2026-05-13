@@ -1,4 +1,4 @@
-# Last updated: 2026-05-12
+# Last updated: 2026-05-12  (v0.2.0)
 flask>=3.0
 pandas>=2.0
 numpy>=1.26

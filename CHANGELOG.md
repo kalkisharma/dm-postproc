@@ -1,3 +1,24 @@
+## [v0.2.0] — 2026-05-12 — Phase 1: Sample Data Generator
+
+### Added
+- `generate_sample_data.py` fully implemented — generates 55 synthetic cases
+- Exponential convergence model: `final + (initial - final)*exp(-k*i) + noise`
+- Physically plausible CL/CD polar, CM, Rotor_Thrust, Pressure_Coefficient, Velocity_Magnitude
+- All 6 case types in correct counts (25 iteration, 15 time, 8 extra monitors, 3 missing data, 2 missing params, 2 short-run)
+- Random seed fixed at 42 for reproducibility
+- Built-in verification printout showing case type breakdown on every run
+
+### Changed
+- None
+
+### Fixed
+- None
+
+### Breaking Changes
+- None
+
+---
+
 ## [v0.1.0] — 2026-05-12 — Phase 0: Repository Setup
 
 ### Added

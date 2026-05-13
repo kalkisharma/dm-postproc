@@ -1,3 +1,21 @@
+## [v0.3.0] — 2026-05-12 — Phase 2: Backend Core
+
+### Added
+- `reader.py`: `scan_run_folder` (detects ok/missing_data/missing_params), `parse_params_csv` (NaN on non-numeric with warning), `parse_data_csv` (time vs iteration auto-detection)
+- `processor.py`: `compute_case_stats` with absolute (iteration + time) and fractional window modes; warns when window exceeds data; `merge_cases` union outer-join with param-first/alphabetical column order; `build_summary`; `process_run_folder` with `ProcessPoolExecutor` + `multiprocessing.Manager().Queue()` bridge
+- `app.py`: full Flask factory — all 8 routes implemented; config auto-created/repaired on startup; browser opens automatically; `if __name__ == "__main__"` guard for Windows multiprocessing
+
+### Changed
+- None
+
+### Fixed
+- None
+
+### Breaking Changes
+- None
+
+---
+
 ## [v0.2.0] — 2026-05-12 — Phase 1: Sample Data Generator
 
 ### Added
